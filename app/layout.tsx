@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
-import { Noto_Sans_Devanagari, Plus_Jakarta_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { SiteHeader } from "@/components/site-header";
@@ -11,18 +11,23 @@ import { getLanguages } from "@/lib/catalog";
 import { getServerI18n, getServerLocale } from "@/lib/i18n/server";
 import { absoluteUrl } from "@/lib/utils";
 
-const jakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
+// Fonts are self-hosted (SIL OFL 1.1) so the production build never depends on
+// fetching fonts.googleapis.com — that fetch is flaky on CI/CD runners and is
+// what breaks `next build` on Vercel.
+const jakarta = localFont({
+  src: "./fonts/plus-jakarta-sans-latin.woff2",
   variable: "--font-jakarta",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: "400 800",
+  fallback: ["system-ui", "arial"],
 });
 
-const devanagari = Noto_Sans_Devanagari({
-  subsets: ["devanagari", "latin"],
+const devanagari = localFont({
+  src: "./fonts/noto-sans-devanagari-devanagari.woff2",
   variable: "--font-noto-devanagari",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: "400 800",
+  fallback: ["system-ui", "arial"],
 });
 
 export const viewport: Viewport = {

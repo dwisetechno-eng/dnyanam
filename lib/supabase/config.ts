@@ -3,10 +3,16 @@ function clean(value: string | undefined): string {
 }
 
 export const supabaseUrl = clean(process.env.NEXT_PUBLIC_SUPABASE_URL);
-export const supabaseAnonKey = clean(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
-export const supabaseServiceRoleKey = clean(
-  process.env.SUPABASE_SERVICE_ROLE_KEY,
-);
+export const supabaseAnonKey =
+  clean(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) ||
+  // Supabase now issues "publishable" keys (sb_publishable_…) that replace the
+  // legacy anon key. Both are safe to expose to the browser.
+  clean(process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
+
+export const supabaseServiceRoleKey =
+  clean(process.env.SUPABASE_SERVICE_ROLE_KEY) ||
+  // New-style "secret" keys (sb_secret_…) replace the legacy service-role JWT.
+  clean(process.env.SUPABASE_SECRET_KEY);
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl.startsWith("http") &&
