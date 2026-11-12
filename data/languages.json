@@ -1,0 +1,101 @@
+[
+  {
+    "code": "mr",
+    "name_mr": "मराठी",
+    "name_hi": "मराठी",
+    "name_en": "Marathi",
+    "name_native": "मराठी",
+    "is_active": true,
+    "sort_order": 1
+  },
+  {
+    "code": "hi",
+    "name_mr": "हिंदी",
+    "name_hi": "हिन्दी",
+    "name_en": "Hindi",
+    "name_native": "हिन्दी",
+    "is_active": true,
+    "sort_order": 2
+  },
+  {
+    "code": "en",
+    "name_mr": "इंग्रजी",
+    "name_hi": "अंग्रेज़ी",
+    "name_en": "English",
+    "name_native": "English",
+    "is_active": true,
+    "sort_order": 3
+  },
+  {
+    "code": "ta",
+    "name_mr": "तमिळ",
+    "name_hi": "तमिल",
+    "name_en": "Tamil",
+    "name_native": "தமிழ்",
+    "is_active": true,
+    "sort_order": 4
+  },
+  {
+    "code": "te",
+    "name_mr": "तेलुगू",
+    "name_hi": "तेलुगु",
+    "name_en": "Telugu",
+    "name_native": "తెలుగు",
+    "is_active": true,
+    "sort_order": 5
+  },
+  {
+    "code": "bn",
+    "name_mr": "बंगाली",
+    "name_hi": "बंगाली",
+    "name_en": "Bengali",
+    "name_native": "বাংলা",
+    "is_active": true,
+    "sort_order": 6
+  },
+  {
+    "code": "gu",
+    "name_mr": "गुजराती",
+    "name_hi": "गुजराती",
+    "name_en": "Gujarati",
+    "name_native": "ગુજરાતી",
+    "is_active": true,
+    "sort_order": 7
+  },
+  {
+    "code": "kn",
+    "name_mr": "कन्नड",
+    "name_hi": "कन्नड़",
+    "name_en": "Kannada",
+    "name_native": "ಕನ್ನಡ",
+    "is_active": true,
+    "sort_order": 8
+  },
+  {
+    "code": "ml",
+    "name_mr": "मल्याळम",
+    "name_hi": "मलयालम",
+    "name_en": "Malayalam",
+    "name_native": "മലയാളം",
+    "is_active": true,
+    "sort_order": 9
+  },
+  {
+    "code": "pa",
+    "name_mr": "पंजाबी",
+    "name_hi": "पंजाबी",
+    "name_en": "Punjabi",
+    "name_native": "ਪੰਜਾਬੀ",
+    "is_active": true,
+    "sort_order": 10
+  },
+  {
+    "code": "or",
+    "name_mr": "ओडिया",
+    "name_hi": "ओड़िया",
+    "name_en": "Odia",
+    "name_native": "ଓଡ଼ିଆ",
+    "is_active": true,
+    "sort_order": 11
+  }
+]

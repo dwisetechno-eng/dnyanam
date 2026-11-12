@@ -1,0 +1,54 @@
+[
+  {
+    "id": "6b9d3a2e-4c1f-4a72-9a01-1e6f0f8a2c01",
+    "title": "दिवाळी अंक महोत्सव · Diwali Editions Festival",
+    "slot_position": "hero_carousel",
+    "desktop_image_url": "/banners/hero-diwali.svg",
+    "mobile_image_url": "/banners/hero-diwali.svg",
+    "target_url": "/browse?collection=magazines",
+    "language_code": null,
+    "starts_at": "2026-10-01T00:00:00+00:00",
+    "ends_at": null,
+    "is_active": true,
+    "priority": 10
+  },
+  {
+    "id": "6b9d3a2e-4c1f-4a72-9a01-1e6f0f8a2c02",
+    "title": "मराठी साहित्याचा खजिना · Marathi Literary Vault",
+    "slot_position": "hero_carousel",
+    "desktop_image_url": "/banners/hero-marathi.svg",
+    "mobile_image_url": "/banners/hero-marathi.svg",
+    "target_url": "/browse?language=mr",
+    "language_code": null,
+    "starts_at": "2026-10-01T00:00:00+00:00",
+    "ends_at": null,
+    "is_active": true,
+    "priority": 8
+  },
+  {
+    "id": "6b9d3a2e-4c1f-4a72-9a01-1e6f0f8a2c03",
+    "title": "नवीन प्रकाशने · Fresh Off The Press",
+    "slot_position": "mid_feed_1",
+    "desktop_image_url": "/banners/mid-latest.svg",
+    "mobile_image_url": "/banners/mid-latest.svg",
+    "target_url": "/browse?collection=latest",
+    "language_code": null,
+    "starts_at": "2026-10-01T00:00:00+00:00",
+    "ends_at": null,
+    "is_active": true,
+    "priority": 6
+  },
+  {
+    "id": "6b9d3a2e-4c1f-4a72-9a01-1e6f0f8a2c04",
+    "title": "ई-बुक्स ₹९९ पासून · e-Books from ₹99",
+    "slot_position": "mid_feed_2",
+    "desktop_image_url": "/banners/mid-ebooks.svg",
+    "mobile_image_url": "/banners/mid-ebooks.svg",
+    "target_url": "/browse?type=ebook",
+    "language_code": null,
+    "starts_at": "2026-10-01T00:00:00+00:00",
+    "ends_at": null,
+    "is_active": true,
+    "priority": 5
+  }
+]

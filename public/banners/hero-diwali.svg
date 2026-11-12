@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="800" viewBox="0 0 1600 800" role="img" aria-label="Dnyanam promotion">
+  <defs>
+    <linearGradient id="b" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2A0718"/>
+      <stop offset="0.55" stop-color="#7F1D1D"/>
+      <stop offset="1" stop-color="#070A12"/>
+    </linearGradient>
+    <radialGradient id="r" cx="0.78" cy="0.2" r="0.8">
+      <stop offset="0" stop-color="#E11D48" stop-opacity="0.7"/>
+      <stop offset="0.6" stop-color="#E11D48" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#E11D48" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="1.4" cy="1.4" r="1.2" fill="#F59E0B" fill-opacity="0.10"/>
+    </pattern>
+    <filter id="blur"><feGaussianBlur stdDeviation="42"/></filter>
+  </defs>
+  <rect width="1600" height="800" fill="url(#b)"/>
+  <rect width="1600" height="800" fill="url(#r)"/>
+  <rect width="1600" height="800" fill="url(#dots)"/>
+  <circle cx="1240" cy="336" r="368" fill="#E11D48" opacity="0.15" filter="url(#blur)"/>
+  <circle cx="1300" cy="384" r="272" fill="none" stroke="#F59E0B" stroke-opacity="0.18" stroke-width="2"/>
+  <circle cx="1300" cy="384" r="208" fill="none" stroke="#F59E0B" stroke-opacity="0.12" stroke-width="1.5"/>
+  <circle cx="1300" cy="384" r="144" fill="none" stroke="#F59E0B" stroke-opacity="0.08" stroke-width="1"/>
+  <path d="M0 656 C 380 528, 700 784, 1600 576 L1600 800 L0 800 Z" fill="#E11D48" opacity="0.16"/>
+  <path d="M0 720 C 420 608, 900 816, 1600 640" fill="none" stroke="#F59E0B" stroke-opacity="0.2" stroke-width="2"/>
+  <text x="64" y="746" fill="#F59E0B" fill-opacity="0.55" font-family="'Plus Jakarta Sans', sans-serif" font-size="17.92" font-weight="700" letter-spacing="6">DNYANAM · SPECIAL EDITIONS</text>
+  <rect x="24" y="24" width="1552" height="752" fill="none" stroke="#F59E0B" stroke-opacity="0.12"/>
+</svg>
