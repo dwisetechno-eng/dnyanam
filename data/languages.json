@@ -97,5 +97,14 @@
     "name_native": "ଓଡ଼ିଆ",
     "is_active": true,
     "sort_order": 11
+  },
+  {
+    "code": "sa",
+    "name_mr": "संस्कृत",
+    "name_hi": "संस्कृत",
+    "name_en": "Sanskrit",
+    "name_native": "संस्कृतम्",
+    "is_active": true,
+    "sort_order": 12
   }
 ]

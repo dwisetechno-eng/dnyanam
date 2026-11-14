@@ -234,7 +234,7 @@
   },
   "browse": {
     "title": "संग्रह पहा",
-    "subtitle": "११ भारतीय भाषांतील छापील पुस्तके, ई-बुक्स आणि मासिके.",
+    "subtitle": "१२ भारतीय भाषांतील छापील पुस्तके, ई-बुक्स आणि मासिके.",
     "all": "सर्व",
     "filters": "फिल्टर्स",
     "sort": "क्रमवारी",
@@ -327,6 +327,35 @@
         "saveFirst": "डिजिटल फाइल अपलोड करण्यापूर्वी पुस्तक जतन करा."
       }
     },
+    "bulk": {
+      "title": "कॅटलॉग बल्क अपलोड",
+      "subtitle": "CSV फाइलमधून एकाच वेळी अनेक पुस्तके जोडा किंवा अपडेट करा.",
+      "downloadSample": "नमुना CSV डाउनलोड करा",
+      "sampleHint": "नमुना फाइलमध्ये प्रत्येक पुस्तकासाठी एक ओळ आहे — ३ उदाहरणे: पुस्तक, ई-पुस्तक आणि डिजिटल नियतकालिक.",
+      "columnsNote": "आवश्यक कॉलम: title, author_or_publisher, item_type, language_code, category, price_rupees, cover_image_url. किंमत रुपयांमध्ये द्या; डेटाबेसमध्ये पैशांमध्ये साठवली जाते.",
+      "dropHere": "तुमची CSV फाइल येथे ड्रॅग करा, किंवा",
+      "browse": "फाइल निवडा",
+      "fileHint": "UTF-8 CSV · ५ MB पर्यंत · २००० ओळींपर्यंत",
+      "orPaste": "किंवा CSV मजकूर पेस्ट करा",
+      "pastePlaceholder": "title,author_or_publisher,item_type,…",
+      "ready": "{count} तयार",
+      "issues": "{count} त्रुटी",
+      "moreRows": "+{count} अधिक ओळी",
+      "import": "{count} पुस्तके अपलोड करा",
+      "importing": "अपलोड होत आहे…",
+      "requiredHint": "आवश्यक कॉलम",
+      "cancel": "रद्द करा",
+      "close": "बंद करा",
+      "resultTitle": "अपलोड पूर्ण",
+      "resultSummary": "{imported} जतन · {created} नवीन · {updated} अपडेट",
+      "noRows": "अपलोड करण्यासारखी ओळ सापडली नाही. वरील त्रुटी तपासा.",
+      "rowLabel": "ओळ {row}",
+      "errorGeneric": "अपलोड अयशस्वी. पुन्हा प्रयत्न करा.",
+      "errorUnauthorized": "सेशन संपले. पुन्हा लॉगिन करा.",
+      "errorNotConfigured": "या डिप्लॉयमेंटवर Supabase सेट केलेले नाही.",
+      "errorTooLarge": "फाइल ५ MB पेक्षा मोठी आहे. लहान फाइलींमध्ये विभागा.",
+      "successToast": "{count} पुस्तके अपलोड झाली."
+    },
     "banners": {
       "title": "मुख्यपृष्ठ बॅनर्स",
       "subtitle": "हिरो कॅरोसेल आणि दोन मधल्या जाहिरात जागा नियंत्रित करा.",
@@ -413,7 +442,7 @@
     "languageNote": "{language} मध्ये वाचत आहात",
     "payments": "Razorpay द्वारे सुरक्षित पेमेंट · UPI · कार्ड · नेटबँकिंग",
     "copyright": "© {year} ज्ञानम. भारतीय भाषांसाठी प्रेमाने बनवले.",
-    "madeFor": "११ भाषा. एक ग्रंथालय."
+    "madeFor": "१२ भाषा. एक ग्रंथालय."
   },
   "validation": {
     "required": "हे क्षेत्र आवश्यक आहे.",

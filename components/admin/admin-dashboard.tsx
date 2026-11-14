@@ -9,6 +9,7 @@ import {
   CheckCircle2,
   Clock,
   ExternalLink,
+  FileSpreadsheet,
   IndianRupee,
   LayoutDashboard,
   Library,
@@ -24,6 +25,7 @@ import {
 } from "lucide-react";
 import { ItemFormModal } from "@/components/admin/item-form";
 import { BannerFormModal } from "@/components/admin/banner-form";
+import { BulkUploadModal } from "@/components/admin/bulk-upload-modal";
 import { useI18n } from "@/lib/i18n/provider";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import { useToast } from "@/lib/ui/toast-provider";
@@ -86,6 +88,7 @@ export function AdminDashboard({
   const [bannerModal, setBannerModal] = useState<AdBanner | null | undefined>(
     undefined,
   );
+  const [bulkOpen, setBulkOpen] = useState(false);
 
   const revenue = useMemo(
     () =>
@@ -171,8 +174,21 @@ export function AdminDashboard({
     toast(t("admin.saved"), "success");
   }
 
-  function onItemSaved(item: CatalogItem, created: boolean) {
-    setItems((current) =>
+  async function reloadItems() {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    const { data, error } = await supabase
+      .from("catalog_items")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) {
+      console.error("[admin] catalogue reload failed:", error.message);
+      return;
+    }
+    setItems((data ?? []) as CatalogItem[]);
+  }
+
+  function onItemSaved(item: CatalogItem, created: boolean) {    setItems((current) =>
       created
         ? [item, ...current]
         : current.map((entry) => (entry.id === item.id ? item : entry)),
@@ -285,6 +301,14 @@ export function AdminDashboard({
                   className="field w-52 py-2 pl-9 text-xs sm:w-64"
                 />
               </div>
+              <button
+                type="button"
+                onClick={() => setBulkOpen(true)}
+                className="btn-secondary px-4 py-2.5 text-xs"
+              >
+                <FileSpreadsheet className="h-4 w-4" />
+                {t("admin.bulk.title")}
+              </button>
               <button
                 type="button"
                 onClick={() => setItemModal(null)}
@@ -647,6 +671,14 @@ export function AdminDashboard({
           defaultLanguage={languages[0]?.code ?? "mr"}
           onClose={() => setItemModal(undefined)}
           onSaved={onItemSaved}
+        />
+      )}
+
+      {bulkOpen && (
+        <BulkUploadModal
+          languages={languages}
+          onClose={() => setBulkOpen(false)}
+          onImported={() => void reloadItems()}
         />
       )}
 

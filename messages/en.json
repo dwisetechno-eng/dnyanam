@@ -234,7 +234,7 @@
   },
   "browse": {
     "title": "Browse the collection",
-    "subtitle": "Physical books, e-books and magazines across 11 Indian languages.",
+    "subtitle": "Physical books, e-books and magazines across 12 Indian languages.",
     "all": "All",
     "filters": "Filters",
     "sort": "Sort by",
@@ -327,6 +327,35 @@
         "saveFirst": "Save the title before uploading a digital file."
       }
     },
+    "bulk": {
+      "title": "Bulk upload catalogue",
+      "subtitle": "Add or update many titles at once from a CSV file.",
+      "downloadSample": "Download sample CSV",
+      "sampleHint": "The template has one row per title, with 3 example rows: a physical book, an e-book and a digital magazine.",
+      "columnsNote": "Required columns: title, author_or_publisher, item_type, language_code, category, price_rupees, cover_image_url. Prices are in rupees and stored as paise.",
+      "dropHere": "Drag & drop your CSV here, or",
+      "browse": "browse files",
+      "fileHint": "UTF-8 CSV · up to 5 MB · up to 2000 rows",
+      "orPaste": "Or paste CSV text",
+      "pastePlaceholder": "title,author_or_publisher,item_type,…",
+      "ready": "{count} ready",
+      "issues": "{count} problems",
+      "moreRows": "+{count} more rows",
+      "import": "Import {count} titles",
+      "importing": "Importing…",
+      "requiredHint": "required columns",
+      "cancel": "Cancel",
+      "close": "Close",
+      "resultTitle": "Import finished",
+      "resultSummary": "{imported} saved · {created} new · {updated} updated",
+      "noRows": "No importable rows found. Check the problems above.",
+      "rowLabel": "Row {row}",
+      "errorGeneric": "Import failed. Please try again.",
+      "errorUnauthorized": "Your session expired. Sign in again.",
+      "errorNotConfigured": "Supabase is not configured on this deployment.",
+      "errorTooLarge": "The file is larger than 5 MB. Split it into smaller files.",
+      "successToast": "{count} titles imported."
+    },
     "banners": {
       "title": "Homepage banners",
       "subtitle": "Control the hero carousel and the two mid-feed ad slots.",
@@ -413,7 +442,7 @@
     "languageNote": "Reading in {language}",
     "payments": "Secure payments by Razorpay · UPI · Cards · Netbanking",
     "copyright": "© {year} Dnyanam. Made with love for Indian languages.",
-    "madeFor": "11 languages. One shelf."
+    "madeFor": "12 languages. One shelf."
   },
   "validation": {
     "required": "This field is required.",

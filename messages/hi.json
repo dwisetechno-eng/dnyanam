@@ -327,6 +327,35 @@
         "saveFirst": "डिजिटल फ़ाइल अपलोड करने से पहले किताब सहेजें।"
       }
     },
+    "bulk": {
+      "title": "कैटलॉग बल्क अपलोड",
+      "subtitle": "CSV फ़ाइल से एक साथ कई पुस्तकें जोड़ें या अपडेट करें।",
+      "downloadSample": "सैंपल CSV डाउनलोड करें",
+      "sampleHint": "सैंपल फ़ाइल में हर पुस्तक के लिए एक पंक्ति है — 3 उदाहरण: पुस्तक, ई-पुस्तक और डिजिटल पत्रिका।",
+      "columnsNote": "ज़रूरी कॉलम: title, author_or_publisher, item_type, language_code, category, price_rupees, cover_image_url. कीमत रुपये में दी जाती है और डेटाबेस में पैसे में सहेजी जाती है।",
+      "dropHere": "अपनी CSV फ़ाइल यहाँ खींचें, या",
+      "browse": "फ़ाइल चुनें",
+      "fileHint": "UTF-8 CSV · 5 MB तक · 2000 पंक्तियाँ तक",
+      "orPaste": "या CSV टेक्स्ट पेस्ट करें",
+      "pastePlaceholder": "title,author_or_publisher,item_type,…",
+      "ready": "{count} तैयार",
+      "issues": "{count} समस्याएँ",
+      "moreRows": "+{count} और पंक्तियाँ",
+      "import": "{count} पुस्तकें अपलोड करें",
+      "importing": "अपलोड हो रहा है…",
+      "requiredHint": "ज़रूरी कॉलम",
+      "cancel": "रद्द करें",
+      "close": "बंद करें",
+      "resultTitle": "अपलोड पूरा हुआ",
+      "resultSummary": "{imported} सहेजी गईं · {created} नई · {updated} अपडेट",
+      "noRows": "अपलोड करने योग्य कोई पंक्ति नहीं मिली। ऊपर दी गई समस्याएँ देखें।",
+      "rowLabel": "पंक्ति {row}",
+      "errorGeneric": "अपलोड विफल रहा। फिर से कोशिश करें।",
+      "errorUnauthorized": "सेशन समाप्त हो गया। दोबारा लॉगिन करें।",
+      "errorNotConfigured": "इस डिप्लॉयमेंट पर Supabase सेट नहीं है।",
+      "errorTooLarge": "फ़ाइल 5 MB से बड़ी है। छोटी फ़ाइलों में बाँटें।",
+      "successToast": "{count} पुस्तकें अपलोड हुईं।"
+    },
     "banners": {
       "title": "होमपेज बैनर",
       "subtitle": "हीरो कैरोसेल और दो मिड-फ़ीड विज्ञापन स्लॉट नियंत्रित करें।",
@@ -413,7 +442,7 @@
     "languageNote": "{language} में पढ़ रहे हैं",
     "payments": "Razorpay द्वारा सुरक्षित भुगतान · UPI · कार्ड · नेटबैंकिंग",
     "copyright": "© {year} ज्ञानम. भारतीय भाषाओं के लिए प्यार से बनाया गया।",
-    "madeFor": "11 भाषाएँ. एक लाइब्रेरी."
+    "madeFor": "12 भाषाएँ. एक लाइब्रेरी."
   },
   "validation": {
     "required": "यह फ़ील्ड ज़रूरी है।",

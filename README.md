@@ -1,6 +1,6 @@
 # ज्ञानम · Dnyanam
 
-An OTT-style, multilingual bookstore for physical books, e-books and magazines. The interface ships in **Marathi by default**, with instant switches to Hindi and English, and a separate ribbon for browsing catalogue content in 11 Indian languages.
+An OTT-style, multilingual bookstore for physical books, e-books and magazines. The interface ships in **Marathi by default**, with instant switches to Hindi and English, and a separate ribbon for browsing catalogue content in 12 Indian languages, Sanskrit included.
 
 Built with Next.js (App Router), TypeScript, Tailwind CSS, Supabase and Razorpay.
 
@@ -12,7 +12,7 @@ Built with Next.js (App Router), TypeScript, Tailwind CSS, Supabase and Razorpay
 - **Languages** — UI locale (`mr` default, `hi`, `en`) stored in a cookie + localStorage; independent catalogue-language ribbon covering Marathi, Hindi, English, Tamil, Telugu, Bengali, Gujarati, Kannada, Malayalam, Punjabi and Odia.
 - **Cart & checkout** — persistent cart, free-shipping threshold, address capture for physical books, Razorpay checkout, idempotent webhook fulfilment.
 - **My Library** — purchased e-books and digital magazines, with signed-URL downloads (or a demo library in browser storage).
-- **Admin** — dashboard with revenue/order stats, order list, catalogue CRUD with cover/sample/digital-file uploads, banner management.
+- **Admin** — dashboard with revenue/order stats, order list, catalogue CRUD with cover/sample/digital-file uploads, banner management, plus bulk CSV upload with a downloadable sample file.
 - **Demo mode** — runs the full storefront with seeded JSON data when Supabase/Razorpay keys are absent.
 
 ## Tech stack
@@ -89,6 +89,33 @@ where id = '<auth-user-id>';
 ```
 
 Visit `/admin`. Admins can manage catalogue items, covers, samples, banners and digital files. Digital asset uploads go to the private `digital_assets` bucket.
+
+### Bulk upload the catalogue
+
+`/admin` -> Books & Magazines -> **Bulk upload catalogue** adds or updates many
+titles in one go. The modal has a **Download sample CSV** button that saves
+`dnyanam-catalog-sample.csv` with the full header row and three example rows
+(physical book, e-book, digital magazine).
+
+- Required columns: `title`, `author_or_publisher`, `item_type`, `language_code`,
+  `category`, `price_rupees`, `cover_image_url`.
+- Header aliases are accepted, so sheets exported from Excel/Sheets work
+  (`author`, `price`, `mrp`, `stock`, `language`, `type`, ...).
+- Prices are entered in rupees and stored as paise; `mrp_rupees` defaults to the
+  selling price.
+- `language_code` accepts the code (`mr`, `hi`, `en`, `sa`, ...) or the language
+  name in Marathi, Hindi, English or native script.
+- Rows are upserted on `slug`, so re-uploading the same file updates rows instead
+  of duplicating them. Keep `slug` stable to preserve order/library links, or
+  leave it empty to have one generated from `title_en` / `title`.
+- Invalid rows are reported by spreadsheet line number and skipped; valid rows
+  still import. Limits: 5 MB and 2000 rows per upload.
+- Importing runs server-side at `POST /api/admin/catalog/import`, admin-only
+  (role checked against `public.profiles`), and re-validates every row.
+
+After editing `data/languages.json` or `data/catalog.json`, run
+`npm run db:generate` and re-apply `supabase/migrations/001_initial_schema.sql`
+to refresh the demo art, seed SQL and language rows.
 
 ## Razorpay setup
 
