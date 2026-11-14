@@ -9,7 +9,9 @@ import { SiteFooter } from "@/components/site-footer";
 import { CartDrawer } from "@/components/cart-drawer";
 import { getLanguages } from "@/lib/catalog";
 import { getServerI18n, getServerLocale } from "@/lib/i18n/server";
-import { absoluteUrl } from "@/lib/utils";
+import { themeBootScript } from "@/lib/theme/config";
+import { getServerThemeMode } from "@/lib/theme/server";
+import { absoluteUrl, cn } from "@/lib/utils";
 
 // Fonts are self-hosted (SIL OFL 1.1) so the production build never depends on
 // fetching fonts.googleapis.com — that fetch is flaky on CI/CD runners and is
@@ -31,8 +33,11 @@ const devanagari = localFont({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#0B0F19",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F6F3EC" },
+    { media: "(prefers-color-scheme: dark)", color: "#0B0F19" },
+  ],
+  colorScheme: "light dark",
   width: "device-width",
   initialScale: 1,
 };
@@ -70,19 +75,32 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const [{ locale, hasCookie }, languages] = await Promise.all([
+  const [{ locale, hasCookie }, languages, themeMode] = await Promise.all([
     getServerLocale(),
     getLanguages(),
+    getServerThemeMode(),
   ]);
 
   return (
     <html
       lang={locale}
-      className={`${jakarta.variable} ${devanagari.variable}`}
+      className={cn(
+        jakarta.variable,
+        devanagari.variable,
+        themeMode === "light" ? "theme-light" : "dark",
+      )}
+      data-theme={themeMode === "light" ? "light" : "dark"}
       suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
       <body className="min-h-dvh font-sans antialiased">
-        <Providers initialLocale={locale} hasLocaleCookie={hasCookie}>
+        <Providers
+          initialLocale={locale}
+          hasLocaleCookie={hasCookie}
+          initialThemeMode={themeMode}
+        >
           <div className="flex min-h-dvh flex-col">
             <SiteHeader />
             <Suspense fallback={<div className="h-[49px] border-b border-white/[0.06]" />}>

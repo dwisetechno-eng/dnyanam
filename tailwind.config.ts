@@ -10,15 +10,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Every surface colour is a CSS variable so the same utilities work in
+        // both themes. See app/globals.css for the light/dark values.
         ink: {
-          950: "#070A12",
-          900: "#0B0F19",
-          850: "#101624",
-          800: "#151C2C",
-          750: "#1A2234",
-          700: "#202A40",
-          600: "#2C3852",
+          950: "rgb(var(--ink-950) / <alpha-value>)",
+          900: "rgb(var(--ink-900) / <alpha-value>)",
+          850: "rgb(var(--ink-850) / <alpha-value>)",
+          800: "rgb(var(--ink-800) / <alpha-value>)",
+          750: "rgb(var(--ink-750) / <alpha-value>)",
+          700: "rgb(var(--ink-700) / <alpha-value>)",
+          600: "rgb(var(--ink-600) / <alpha-value>)",
         },
+        // `white/xx` is used everywhere for muted text and hairlines, so it
+        // follows the foreground colour instead of staying literally white.
+        white: "rgb(var(--fg) / <alpha-value>)",
         saffron: {
           100: "#FEF3C7",
           200: "#FDE68A",
@@ -34,7 +39,11 @@ const config: Config = {
           500: "#F43F5E",
           600: "#E11D48",
         },
-        cream: "#F8F4EA",
+        cream: "rgb(var(--cream) / <alpha-value>)",
+        // Fixed dark ink for text/icons drawn on amber/emerald buttons.
+        "on-accent": "#0A0D15",
+        // Modal/drawer backdrop, dark in both themes.
+        scrim: "rgb(var(--scrim) / <alpha-value>)",
       },
       fontFamily: {
         sans: [

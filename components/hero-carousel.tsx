@@ -126,7 +126,7 @@ export function HeroCarousel({ items }: { items: CatalogItem[] }) {
               </span>
             )}
             {discount > 0 && (
-              <span className="mb-1 badge bg-rose-600 text-white">
+              <span className="mb-1 badge bg-rose-600 text-[#fff]">
                 {t("card.off", { percent: discount })}
               </span>
             )}

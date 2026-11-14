@@ -256,7 +256,7 @@ export function AuthForm({ next }: { next: string }) {
                   className={cn(
                     "flex-1 rounded-full px-4 py-2 text-xs font-bold transition",
                     mode === "signIn"
-                      ? "bg-saffron-400 text-ink-950"
+                      ? "bg-saffron-400 text-on-accent"
                       : "text-white/50 hover:text-cream",
                   )}
                 >
@@ -268,7 +268,7 @@ export function AuthForm({ next }: { next: string }) {
                   className={cn(
                     "flex-1 rounded-full px-4 py-2 text-xs font-bold transition",
                     mode === "signUp"
-                      ? "bg-saffron-400 text-ink-950"
+                      ? "bg-saffron-400 text-on-accent"
                       : "text-white/50 hover:text-cream",
                   )}
                 >

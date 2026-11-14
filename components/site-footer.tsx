@@ -26,6 +26,8 @@ const shopLinks = [
 
 const companyLinks = [
   { href: "/info/about", key: "footer.about" },
+  { href: "/radio", key: "nav.radio" },
+  { href: "/profile", key: "nav.profile" },
   { href: "/info/contact", key: "footer.contact" },
   { href: "/library", key: "nav.library" },
 ];

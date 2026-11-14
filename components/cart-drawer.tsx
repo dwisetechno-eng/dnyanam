@@ -380,7 +380,7 @@ export function CartDrawer() {
         aria-label={t("cart.close")}
         onClick={handleClose}
         className={cn(
-          "absolute inset-0 bg-ink-950/75 backdrop-blur-sm transition-opacity duration-300",
+          "absolute inset-0 scrim backdrop-blur-sm transition-opacity duration-300",
           isOpen ? "opacity-100" : "opacity-0",
         )}
       />

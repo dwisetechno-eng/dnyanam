@@ -21,7 +21,7 @@ export function Logo({
       className={cn("group flex items-center gap-2.5", className)}
     >
       <span className="relative grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-saffron-300 via-saffron-500 to-rose-600 shadow-[0_10px_30px_-10px_rgba(245,158,11,0.7)] transition duration-300 group-hover:rotate-3 group-hover:scale-105">
-        <BookOpen className="h-5 w-5 text-ink-950" strokeWidth={2.4} />
+        <BookOpen className="h-5 w-5 text-on-accent" strokeWidth={2.4} />
         <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-rose-400 ring-2 ring-ink-900" />
       </span>
       {!compact && (

@@ -151,7 +151,7 @@ export function BulkUploadModal({
         type="button"
         aria-label={t("admin.bulk.close")}
         onClick={onClose}
-        className="absolute inset-0 bg-ink-950/80 backdrop-blur-sm"
+        className="absolute inset-0 scrim backdrop-blur-sm"
       />
       <div
         role="dialog"

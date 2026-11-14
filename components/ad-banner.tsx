@@ -34,7 +34,7 @@ export function AdBanner({ banner }: { banner: AdBannerType }) {
         <h2 className="max-w-xl text-balance text-lg font-extrabold leading-snug text-cream sm:text-2xl lg:text-3xl">
           {banner.title}
         </h2>
-        <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-saffron-400 px-3.5 py-2 text-[11px] font-extrabold text-ink-950 shadow-lg transition group-hover:bg-saffron-300 sm:px-4 sm:text-xs">
+        <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-saffron-400 px-3.5 py-2 text-[11px] font-extrabold text-on-accent shadow-lg transition group-hover:bg-saffron-300 sm:px-4 sm:text-xs">
           {t("home.adCta")}
           <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
         </span>

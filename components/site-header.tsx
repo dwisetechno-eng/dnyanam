@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { LanguageSwitcher, LanguageSwitcherMenu } from "@/components/language-switcher";
+import { ThemeToggle } from "@/components/theme-controls";
 import { useAuth } from "@/lib/auth/auth-provider";
 import { useCart } from "@/lib/cart/cart-provider";
 import { useI18n } from "@/lib/i18n/provider";
@@ -25,6 +26,7 @@ import { cn, getInitials } from "@/lib/utils";
 const navLinks = [
   { href: "/", key: "nav.home" },
   { href: "/browse", key: "nav.browse" },
+  { href: "/radio", key: "nav.radio" },
   { href: "/library", key: "nav.library" },
 ] as const;
 
@@ -145,6 +147,8 @@ export function SiteHeader() {
 
           <LanguageSwitcher className="hidden sm:inline-flex" />
 
+          <ThemeToggle className="hidden sm:inline-flex" />
+
           {loading && configured ? (
             <span className="hidden h-9 w-24 animate-pulse rounded-full bg-white/[0.06] sm:block" />
           ) : user ? (
@@ -156,7 +160,7 @@ export function SiteHeader() {
                 aria-haspopup="menu"
                 className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] p-1 pr-1.5 transition hover:border-white/20 hover:bg-white/[0.08]"
               >
-                <span className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-saffron-300 to-rose-600 text-[11px] font-extrabold text-ink-950">
+                <span className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-saffron-300 to-rose-600 text-[11px] font-extrabold text-on-accent">
                   {getInitials(profile?.full_name, user.email)}
                 </span>
                 <span className="hidden max-w-[110px] truncate text-xs font-semibold text-cream sm:block">
@@ -177,6 +181,14 @@ export function SiteHeader() {
                     <p className="truncate text-xs text-white/40">{user.email}</p>
                   </div>
                   <div className="space-y-0.5 pt-2">
+                    <Link
+                      href="/profile"
+                      role="menuitem"
+                      className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold text-white/70 transition hover:bg-white/[0.06] hover:text-cream"
+                    >
+                      <UserRound className="h-4 w-4 text-saffron-400" />
+                      {t("nav.profile")}
+                    </Link>
                     <Link
                       href="/library"
                       role="menuitem"
@@ -224,7 +236,7 @@ export function SiteHeader() {
           <button
             type="button"
             onClick={openCart}
-            className="relative flex items-center gap-2 rounded-full bg-gradient-to-r from-saffron-300 to-saffron-500 px-3 py-2.5 text-ink-950 shadow-[0_8px_24px_-10px_rgba(245,158,11,0.8)] transition hover:from-saffron-200 hover:to-saffron-400 active:scale-95 sm:px-4"
+            className="relative flex items-center gap-2 rounded-full bg-gradient-to-r from-saffron-300 to-saffron-500 px-3 py-2.5 text-on-accent shadow-[0_8px_24px_-10px_rgba(245,158,11,0.8)] transition hover:from-saffron-200 hover:to-saffron-400 active:scale-95 sm:px-4"
             aria-label={t("nav.cart")}
           >
             <ShoppingBag className="h-[18px] w-[18px]" strokeWidth={2.4} />
@@ -232,7 +244,7 @@ export function SiteHeader() {
               {t("nav.cart")}
             </span>
             {hydrated && count > 0 && (
-              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-ink-950 px-1 text-[10px] font-extrabold text-saffron-300">
+              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-[#0B0F19] px-1 text-[10px] font-extrabold text-[#FCD34D]">
                 {count}
               </span>
             )}
@@ -261,7 +273,7 @@ export function SiteHeader() {
           <button
             type="button"
             aria-label={t("nav.close")}
-            className="absolute inset-0 bg-ink-950/70 backdrop-blur-sm"
+            className="absolute inset-0 scrim backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
           />
           <div className="absolute inset-y-0 left-0 flex w-[86%] max-w-sm flex-col border-r border-white/10 bg-ink-900 p-5 shadow-drawer animate-slide-in">
@@ -315,6 +327,19 @@ export function SiteHeader() {
 
             <div className="mt-auto space-y-4 border-t border-white/10 pt-5">
               <LanguageSwitcherMenu />
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                {user && (
+                  <Link
+                    href="/profile"
+                    className="btn-secondary flex-1 px-4 py-2.5"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <UserRound className="h-4 w-4" />
+                    {t("nav.profile")}
+                  </Link>
+                )}
+              </div>
               {!user && (
                 <Link
                   href="/login"

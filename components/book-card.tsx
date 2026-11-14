@@ -72,14 +72,14 @@ export function BookCard({
                 {t(`format.${item.item_type}`)}
               </span>
               {item.is_latest_arrival && !outOfStock && (
-                <span className="badge bg-saffron-400 text-ink-950">
+                <span className="badge bg-saffron-400 text-on-accent">
                   {t("home.newBadge")}
                 </span>
               )}
             </div>
 
             {discount > 0 && (
-              <span className="absolute right-2 top-2 badge bg-rose-600 text-white shadow-lg">
+              <span className="absolute right-2 top-2 badge bg-rose-600 text-[#fff] shadow-lg">
                 {t("card.off", { percent: discount })}
               </span>
             )}
@@ -110,8 +110,8 @@ export function BookCard({
             className={cn(
               "absolute -bottom-3 right-2 grid h-9 w-9 place-items-center rounded-full border-2 border-ink-900 shadow-xl transition duration-300",
               added
-                ? "bg-emerald-500 text-ink-950"
-                : "bg-gradient-to-br from-saffron-300 to-saffron-500 text-ink-950 hover:scale-110",
+                ? "bg-emerald-500 text-on-accent"
+                : "bg-gradient-to-br from-saffron-300 to-saffron-500 text-on-accent hover:scale-110",
               outOfStock && "cursor-not-allowed bg-white/15 text-white/30",
               "opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100",
             )}

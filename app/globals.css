@@ -4,14 +4,44 @@
 
 :root {
   color-scheme: dark;
-  --ink: #0b0f19;
-  --surface: #151c2c;
-  --saffron: #f59e0b;
+
+  /* Surfaces (RGB triplets so Tailwind alpha modifiers keep working). */
+  --ink-950: 7 10 18;
+  --ink-900: 11 15 25;
+  --ink-850: 16 22 36;
+  --ink-800: 21 28 44;
+  --ink-750: 26 34 52;
+  --ink-700: 32 42 64;
+  --ink-600: 44 56 82;
+
+  --cream: 248 244 234;
+  --fg: 255 255 255;
+  --scrim: 7 10 18;
+  --ring-offset: 11 15 25;
+  --glass: 11 15 25;
+}
+
+.theme-light {
+  color-scheme: light;
+
+  --ink-950: 233 228 216;
+  --ink-900: 246 243 236;
+  --ink-850: 255 255 255;
+  --ink-800: 255 255 255;
+  --ink-750: 243 239 231;
+  --ink-700: 233 228 219;
+  --ink-600: 214 208 196;
+
+  --cream: 28 29 33;
+  --fg: 30 32 38;
+  --scrim: 26 22 16;
+  --ring-offset: 246 243 236;
+  --glass: 250 247 241;
 }
 
 @layer base {
   * {
-    border-color: rgba(255, 255, 255, 0.08);
+    border-color: rgb(var(--fg) / 0.08);
   }
 
   html {
@@ -22,6 +52,8 @@
     @apply bg-ink-900 text-cream;
     font-feature-settings: "ss01" on, "cv11" on;
     line-height: 1.7;
+    /* Reserved by <RadioBar> while a track is loaded. */
+    padding-bottom: var(--radio-bar-h, 0px);
     background-image:
       radial-gradient(900px 500px at 85% -10%, rgba(245, 158, 11, 0.08), transparent 60%),
       radial-gradient(800px 500px at -10% 30%, rgba(225, 29, 72, 0.06), transparent 60%);
@@ -46,18 +78,16 @@
     color: #fff8ec;
   }
 
+  .theme-light ::selection {
+    color: #3b2600;
+  }
+
   :focus-visible {
     outline: none;
     box-shadow:
-      0 0 0 2px #0b0f19,
+      0 0 0 2px rgb(var(--ring-offset)),
       0 0 0 4px rgba(245, 158, 11, 0.7);
     border-radius: 0.5rem;
-  }
-
-  input,
-  textarea,
-  select {
-    color-scheme: dark;
   }
 
   input::placeholder,
@@ -70,15 +100,15 @@
     height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: #0b0f19;
+    background: rgb(var(--ink-950));
   }
   ::-webkit-scrollbar-thumb {
-    background: #2c3852;
+    background: rgb(var(--ink-600));
     border-radius: 999px;
-    border: 2px solid #0b0f19;
+    border: 2px solid rgb(var(--ink-950));
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #3b4a68;
+    background: rgb(var(--ink-700));
   }
 }
 
@@ -104,7 +134,7 @@
   }
 
   .btn-primary {
-    @apply btn bg-gradient-to-r from-saffron-300 via-saffron-400 to-saffron-500 px-5 py-3 text-ink-950 shadow-[0_12px_35px_-12px_rgba(245,158,11,0.75)] hover:from-saffron-200 hover:via-saffron-300 hover:to-saffron-400 hover:shadow-[0_18px_45px_-12px_rgba(245,158,11,0.85)] active:scale-[0.98];
+    @apply btn bg-gradient-to-r from-saffron-300 via-saffron-400 to-saffron-500 px-5 py-3 text-on-accent shadow-[0_12px_35px_-12px_rgba(245,158,11,0.75)] hover:from-saffron-200 hover:via-saffron-300 hover:to-saffron-400 hover:shadow-[0_18px_45px_-12px_rgba(245,158,11,0.85)] active:scale-[0.98];
   }
 
   .btn-secondary {
@@ -120,7 +150,7 @@
   }
 
   .chip-active {
-    @apply border-saffron-400/60 bg-saffron-400 text-ink-950 shadow-[0_8px_30px_-12px_rgba(245,158,11,0.8)] hover:bg-saffron-300 hover:text-ink-950;
+    @apply border-saffron-400/60 bg-saffron-400 text-on-accent shadow-[0_8px_30px_-12px_rgba(245,158,11,0.8)] hover:bg-saffron-300 hover:text-on-accent;
   }
 
   .field {
@@ -181,9 +211,14 @@
   }
 
   .glass {
-    background: rgba(11, 15, 25, 0.72);
+    background: rgb(var(--glass) / 0.72);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
+  }
+
+  /* Modal / drawer backdrop: always dark, in both themes. */
+  .scrim {
+    background-color: rgb(var(--scrim) / 0.72);
   }
 
   .deal-glow {
@@ -191,4 +226,107 @@
       radial-gradient(120% 120% at 20% 0%, rgba(245, 158, 11, 0.18), transparent 55%),
       radial-gradient(100% 100% at 100% 100%, rgba(225, 29, 72, 0.18), transparent 55%);
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Light theme accent fixes
+   Saffron / emerald / rose / amber / sky at the pale end of the scale are
+   designed for dark surfaces. On the cream background they lose contrast, so
+   keep the semantic colour but step it down the scale. Everything else
+   (backgrounds, borders, ink surfaces) is handled by the CSS variables above.
+--------------------------------------------------------------------------- */
+.theme-light .eyebrow,
+.theme-light .text-saffron-400,
+.theme-light .text-saffron-300,
+.theme-light .text-saffron-200,
+.theme-light .text-saffron-100,
+.theme-light .text-saffron-50 {
+  color: #8a4a05;
+}
+
+.theme-light .text-saffron-300\/85,
+.theme-light .text-saffron-300\/90,
+.theme-light .text-saffron-200\/75,
+.theme-light .text-saffron-200\/80,
+.theme-light .text-saffron-400\/80,
+.theme-light .text-saffron-100\/70 {
+  color: rgb(138 74 5 / 0.85);
+}
+
+.theme-light .text-amber-300 {
+  color: #b45309;
+}
+
+.theme-light .text-emerald-300,
+.theme-light .text-emerald-400 {
+  color: #047857;
+}
+
+.theme-light .text-emerald-400\/70,
+.theme-light .text-emerald-400\/80,
+.theme-light .text-emerald-100\/70 {
+  color: rgb(4 120 87 / 0.85);
+}
+
+.theme-light .text-rose-200,
+.theme-light .text-rose-300,
+.theme-light .text-rose-400 {
+  color: #be123c;
+}
+
+.theme-light .text-rose-200\/70,
+.theme-light .text-rose-200\/80,
+.theme-light .text-rose-300\/80,
+.theme-light .text-rose-400\/70 {
+  color: rgb(190 18 60 / 0.85);
+}
+
+.theme-light .text-sky-300 {
+  color: #0369a1;
+}
+
+.theme-light .cover-shadow {
+  box-shadow:
+    0 24px 40px -26px rgba(58, 48, 32, 0.5),
+    0 0 0 1px rgba(30, 32, 38, 0.1);
+}
+
+/* The dark theme mutes secondary text with `text-white/xx`. On cream those
+   same opacities drop below 4.5:1, so lift each step of the scale slightly.
+   Backgrounds and borders keep their original values. */
+.theme-light .text-white\/20 {
+  color: rgb(var(--fg) / 0.35);
+}
+.theme-light .text-white\/25 {
+  color: rgb(var(--fg) / 0.4);
+}
+.theme-light .text-white\/30 {
+  color: rgb(var(--fg) / 0.45);
+}
+.theme-light .text-white\/35 {
+  color: rgb(var(--fg) / 0.5);
+}
+.theme-light .text-white\/40 {
+  color: rgb(var(--fg) / 0.55);
+}
+.theme-light .text-white\/45 {
+  color: rgb(var(--fg) / 0.6);
+}
+.theme-light .text-white\/50 {
+  color: rgb(var(--fg) / 0.65);
+}
+.theme-light .text-white\/55 {
+  color: rgb(var(--fg) / 0.68);
+}
+.theme-light .text-white\/60 {
+  color: rgb(var(--fg) / 0.72);
+}
+.theme-light .text-white\/65 {
+  color: rgb(var(--fg) / 0.75);
+}
+.theme-light .text-white\/70 {
+  color: rgb(var(--fg) / 0.78);
+}
+.theme-light .text-white\/75 {
+  color: rgb(var(--fg) / 0.82);
 }

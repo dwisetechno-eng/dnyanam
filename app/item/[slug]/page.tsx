@@ -144,7 +144,7 @@ export default async function ItemPage({
               {t(`category.${item.category}`)}
             </span>
             {item.is_latest_arrival && (
-              <span className="badge bg-saffron-400 text-ink-950">
+              <span className="badge bg-saffron-400 text-on-accent">
                 {t("home.newBadge")}
               </span>
             )}

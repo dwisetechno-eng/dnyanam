@@ -283,7 +283,7 @@ export function ItemFormModal({
         type="button"
         aria-label={t("admin.cancel")}
         onClick={onClose}
-        className="absolute inset-0 bg-ink-950/80 backdrop-blur-sm"
+        className="absolute inset-0 scrim backdrop-blur-sm"
       />
       <div
         role="dialog"

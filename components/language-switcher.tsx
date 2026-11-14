@@ -63,7 +63,7 @@ export function LanguageSwitcher({
           className={cn(
             "min-w-[52px] rounded-full px-2.5 py-1.5 text-[12px] font-bold leading-none transition sm:min-w-[58px]",
             locale === code
-              ? "bg-gradient-to-r from-saffron-300 to-saffron-500 text-ink-950 shadow-[0_6px_16px_-8px_rgba(245,158,11,0.9)]"
+              ? "bg-gradient-to-r from-saffron-300 to-saffron-500 text-on-accent shadow-[0_6px_16px_-8px_rgba(245,158,11,0.9)]"
               : "text-white/55 hover:text-cream",
           )}
         >

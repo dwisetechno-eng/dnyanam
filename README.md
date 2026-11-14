@@ -117,6 +117,64 @@ After editing `data/languages.json` or `data/catalog.json`, run
 `npm run db:generate` and re-apply `supabase/migrations/001_initial_schema.sql`
 to refresh the demo art, seed SQL and language rows.
 
+## Appearance (dark / light)
+
+Readers can switch between the dark theme (default) and a light, paper-like
+theme in **Profile → Appearance** (`/profile`). A sun/moon button in the header
+flips it instantly. The choice is saved in `localStorage` and the
+`dnyanam.theme` cookie, and an inline boot script in `<head>` applies it before
+the first paint, so there is no flash on reload. **System** follows the OS
+preference and updates live.
+
+The palette is driven by CSS variables in `app/globals.css` (`--ink-*`,
+`--cream`, `--fg`, ...), so existing `ink-*` / `white/*` / `cream` utilities
+switch automatically. When adding a new surface, use those utilities rather
+than hard-coded hex values.
+
+## Radio
+
+`/radio` is a streaming radio for the geets collected on
+[GeetGanga](https://geetganga.org). Two stations ship by default:
+
+- **प्रेरणा के स्वर** — the `prerana`, `inspiration` and `motivational` genres
+  (only geets that actually have a recording).
+- **भारताचे स्वर** — all 105 recorded geets from the `bharat` genre.
+
+Playback continues while the reader navigates; a mini-player pinned to the
+bottom of the page has play/pause, next/previous, seek and volume, and exposes
+OS-level controls through the Media Session API. The track list filters by
+language and can start the station from any track.
+
+### Refreshing the stations
+
+```bash
+npm run radio:sync                # refresh data/radio.json (all stations)
+node scripts/sync-radio.mjs bharat # refresh one station
+```
+
+The script reads GeetGanga's public genre listings, fetches only geets with a
+recording, extracts the mp3 URL + duration, and writes `data/radio.json`. This
+happens at build time — the running app never scrapes GeetGanga. Edit the
+`STATIONS` array in `scripts/sync-radio.mjs` to add genres or new stations.
+
+### Licensing
+
+GeetGanga's recordings are published under
+[CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/). The radio page
+and the player link back to GeetGanga and to each geet's source page, and the
+licence is shown next to the player. If you deploy at scale, mirror the audio
+files in your own storage and serve them from there, keeping the same
+attribution and licence notice.
+
+### Audiobooks and book summaries
+
+The player is intentionally generic: a station is just a named queue of
+`RadioTrack` objects (`lib/radio/types.ts`). Every track carries a `kind`
+(`song` today, `audiobook` / `book_summary` later), plus optional `author`,
+`description` and `cover_image_url` fields. Adding audiobooks therefore means
+producing a new station in `data/radio.json` (or a new data source) — no
+player changes required.
+
 ## Razorpay setup
 
 1. Create a Razorpay account and generate API keys (Test mode is fine).
@@ -145,6 +203,7 @@ npm run start           # serve the production build
 npm run generate:covers # regenerate SVG covers/banners from data/*.json
 npm run generate:sql    # rebuild 001_initial_schema.sql from _base.sql + data
 npm run db:generate     # both of the above
+npm run radio:sync      # refresh data/radio.json from GeetGanga
 ```
 
 The canonical seed data lives in `data/`; both the SQL migration and the demo storefront are generated from it. Re-run `npm run db:generate` after editing catalogue data, then re-apply the migration.
@@ -158,24 +217,28 @@ app/
   search/                   search results
   item/[slug]/              product detail + sample modal
   library/                  purchased digital items
+  radio/                    GeetGanga streaming radio
+  profile/                  account, appearance and listening preferences
   login/                    sign in / sign up
   admin/                    admin dashboard (role-gated)
   info/[slug]/              about, contact, help, returns, privacy, terms
   api/checkout/             create-order + verify
   api/webhooks/razorpay/    signed, idempotent webhook
   api/download/[itemId]/    signed download URL
-components/                 UI, cart drawer, admin forms, library client
+components/                 UI, cart drawer, admin forms, library client, radio player
 lib/
   catalog.ts                Supabase/demo data access
   demo.ts                   demo catalogue loader
   demo-library.ts           localStorage library (demo mode)
   i18n/                     typed dictionaries + provider
+  radio/                    radio types, station data and localisation
+  theme/                    theme modes, boot script, provider
   payments/                 Razorpay helpers + fulfilment
   supabase/                 browser/server/admin clients
 messages/                   mr.json (default), hi.json, en.json
 supabase/migrations/        schema, RLS, storage, seeds
 data/                       source JSON used to generate SQL + assets
-scripts/                    asset and SQL generators
+scripts/                    asset, SQL and radio sync scripts
 ```
 
 ## Language model
@@ -189,7 +252,9 @@ To add a UI locale, add a JSON file under `messages/`, extend the locale list in
 
 ## Accessibility & design notes
 
-- Dark OTT theme: `#0B0F19` background, `#151C2C` surfaces, saffron `#F59E0B` and rose `#E11D48` accents.
+- Dark by default; readers can switch to the light, paper-like theme from the
+  header or **Profile → Appearance**. Both themes share the same spacing,
+  typography and accent colours.
 - Devanagari body copy keeps a line-height of at least `1.4`.
 - Rails are touch-scrollable with snap points; arrow controls appear on larger screens.
 - Reduced-motion preferences are respected by the global stylesheet.
@@ -201,4 +266,6 @@ To add a UI locale, add a JSON file under `messages/`, extend the locale list in
 - Point the Razorpay webhook at the production domain and verify a test payment end to end.
 - Apply `supabase/migrations/001_initial_schema.sql` to the production project.
 - Confirm storage bucket policies: `covers`/`samples` public, `digital_assets` private.
+- Run `npm run radio:sync` after the final deploy if you want fresh recordings
+  baked into `data/radio.json` (the file is committed, so this is optional).
 - Promote at least one admin account.

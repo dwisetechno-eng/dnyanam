@@ -216,7 +216,7 @@ function SampleModal({
         type="button"
         aria-label={t("item.sampleClose")}
         onClick={onClose}
-        className="absolute inset-0 bg-ink-950/80 backdrop-blur-sm"
+        className="absolute inset-0 scrim backdrop-blur-sm"
       />
       <div
         role="dialog"
