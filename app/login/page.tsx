@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string }>;
+  searchParams: Promise<{ next?: string; error?: string }>;
 }) {
   const params = await searchParams;
   const next =
@@ -23,6 +23,8 @@ export default async function LoginPage({
     !params.next.startsWith("//")
       ? params.next
       : "/";
+  const initialError =
+    typeof params.error === "string" ? params.error : null;
 
-  return <AuthForm next={next} />;
+  return <AuthForm next={next} initialError={initialError} />;
 }

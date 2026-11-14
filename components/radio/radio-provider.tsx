@@ -75,7 +75,11 @@ export function RadioProvider({ children }: { children: React.ReactNode }) {
   // Restore the listener's volume once on mount.
   useEffect(() => {
     try {
-      const stored = Number(window.localStorage.getItem(VOLUME_KEY));
+      const raw = window.localStorage.getItem(VOLUME_KEY);
+      // No saved value means "first visit": keep the audible default. Without
+      // this guard `Number(null)` is 0 and the player starts silent.
+      if (raw === null) return;
+      const stored = Number(raw);
       if (Number.isFinite(stored) && stored >= 0 && stored <= 1) {
         setVolumeState(stored);
       }
@@ -212,7 +216,23 @@ export function RadioProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const toggleMute = useCallback(() => setMuted((value) => !value), []);
+  const toggleMute = useCallback(() => {
+    if (muted) {
+      setMuted(false);
+      return;
+    }
+    if (volume === 0) {
+      // The speaker icon doubles as "restore sound" when the slider is at 0.
+      setVolumeState(DEFAULT_VOLUME);
+      try {
+        window.localStorage.setItem(VOLUME_KEY, String(DEFAULT_VOLUME));
+      } catch {
+        // ignore
+      }
+      return;
+    }
+    setMuted(true);
+  }, [muted, volume]);
 
   const stop = useCallback(() => {
     const audio = audioRef.current;

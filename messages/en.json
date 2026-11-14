@@ -223,7 +223,17 @@
     "signingUp": "Creating account…",
     "checkEmail": "Check your email",
     "checkEmailBody": "We sent a confirmation link. Verify your email and then sign in.",
-    "backHome": "Back to home"
+    "backHome": "Back to home",
+    "emailNotConfirmed": "Your email is not verified yet. Send a new confirmation link and open it from your inbox.",
+    "resend": "Resend confirmation email",
+    "resending": "Sending…",
+    "resent": "Confirmation email sent — check your inbox and spam folder.",
+    "resendFailed": "Could not send the email. Try again in a few minutes.",
+    "emailRateLimited": "Supabase's default email service is rate-limited. Wait a few minutes, or turn off ‘Confirm email’ / add your own SMTP in Supabase.",
+    "emailExists": "That email is already registered. Sign in or reset your password.",
+    "weakPassword": "That password is too weak — use at least 8 characters.",
+    "callbackError": "The email link expired or was opened in a different browser. Sign in again or request a new confirmation link.",
+    "checkEmailSpam": "Don't see the email? Check your spam/junk folder, and open the link in the same browser."
   },
   "search": {
     "title": "Search",

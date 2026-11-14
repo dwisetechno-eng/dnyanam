@@ -64,7 +64,8 @@ RAZORPAY_WEBHOOK_SECRET=
 ```
 
 - `SUPABASE_SERVICE_ROLE_KEY` is **server-only**. It is used for pricing, order fulfilment and signed downloads. Never expose it with a `NEXT_PUBLIC_` prefix.
-- Demo mode is disabled as soon as `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are present.
+- New-style Supabase keys are supported too: set `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` instead of the anon key, and `SUPABASE_SECRET_KEY` instead of the service-role key.
+- Demo mode is disabled as soon as `NEXT_PUBLIC_SUPABASE_URL` and a publishable/anon key are present.
 
 ## Supabase setup
 
@@ -76,7 +77,30 @@ RAZORPAY_WEBHOOK_SECRET=
    - seed languages, catalogue items and banners
 3. Copy the project URL, anon key and service-role key into `.env.local`.
 4. In **Authentication → Providers**, enable Email. For local testing you may disable "Confirm email" so sign-up works immediately.
-5. Add your site URL and `http://localhost:3000/auth/callback` to **Authentication → URL Configuration**.
+5. Add your site URL and `http://localhost:3000/auth/callback` to **Authentication → URL Configuration**. Add the production callback as well (`https://your-domain/auth/callback`).
+
+### Sign-up troubleshooting
+
+Supabase projects created recently have **Confirm email** turned on by default,
+and the built-in email service is rate-limited (a handful of messages per hour)
+and often filtered as spam. That produces errors such as
+`email rate limit exceeded`, `Error sending confirmation email`, or
+`Email not confirmed` after signing in too early. No account is created when the
+confirmation email cannot be sent.
+
+Pick one of these:
+
+- **Quickest for local testing:** Authentication → Sign In / Providers → Email →
+  turn **Confirm email** off. New accounts then get a session immediately.
+- **For production:** add your own SMTP server under Project Settings →
+  Authentication → SMTP, and keep Confirm email on.
+- The login screen now detects `Email not confirmed` and offers a
+  **Resend confirmation email** button. The sign-up screen also has a resend
+  action and points users at the spam folder.
+
+If the confirmation link opens but lands on `/login?error=auth_callback`, the
+redirect URL is missing from **Authentication → URL Configuration**, or the link
+was opened in a different browser than the one used to sign up.
 
 ### Promote an admin
 

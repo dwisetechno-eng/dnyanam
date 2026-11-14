@@ -23,6 +23,14 @@ import { cn } from "@/lib/utils";
 
 type Mode = "signIn" | "signUp";
 
+type AuthErrorKind =
+  | "invalid"
+  | "unconfirmed"
+  | "rate"
+  | "exists"
+  | "weak"
+  | "generic";
+
 interface FieldErrors {
   email?: string;
   password?: string;
@@ -30,7 +38,50 @@ interface FieldErrors {
   phone?: string;
 }
 
-export function AuthForm({ next }: { next: string }) {
+/** Supabase returns English messages; classify them so we can show useful copy. */
+function classifyAuthError(message: string): AuthErrorKind {
+  const text = message.toLowerCase();
+  if (text.includes("email not confirmed") || text.includes("not confirmed")) {
+    return "unconfirmed";
+  }
+  if (
+    text.includes("rate limit") ||
+    text.includes("too many") ||
+    text.includes("sending confirmation") ||
+    text.includes("error sending")
+  ) {
+    return "rate";
+  }
+  if (
+    text.includes("already registered") ||
+    text.includes("already been registered") ||
+    text.includes("user already exists")
+  ) {
+    return "exists";
+  }
+  if (text.includes("weak") || text.includes("password should")) {
+    return "weak";
+  }
+  if (text.includes("invalid")) return "invalid";
+  return "generic";
+}
+
+const AUTH_ERROR_KEYS: Record<AuthErrorKind, string> = {
+  invalid: "auth.invalidCredentials",
+  unconfirmed: "auth.emailNotConfirmed",
+  rate: "auth.emailRateLimited",
+  exists: "auth.emailExists",
+  weak: "auth.weakPassword",
+  generic: "auth.genericError",
+};
+
+export function AuthForm({
+  next,
+  initialError,
+}: {
+  next: string;
+  initialError?: string | null;
+}) {
   const { t } = useI18n();
   const router = useRouter();
   const { user, loading, configured } = useAuth();
@@ -41,9 +92,18 @@ export function AuthForm({ next }: { next: string }) {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
-  const [formError, setFormError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(
+    initialError ? t("auth.callbackError") : null,
+  );
+  const [errorKind, setErrorKind] = useState<AuthErrorKind | null>(null);
+  const [errorDetail, setErrorDetail] = useState<string | null>(
+    initialError && initialError !== "auth_callback" ? initialError : null,
+  );
   const [busy, setBusy] = useState(false);
   const [checkEmail, setCheckEmail] = useState(false);
+  const [pendingEmail, setPendingEmail] = useState("");
+  const [resendBusy, setResendBusy] = useState(false);
+  const [resendNote, setResendNote] = useState<"sent" | "error" | null>(null);
 
   useEffect(() => {
     if (!loading && user) {
@@ -71,9 +131,20 @@ export function AuthForm({ next }: { next: string }) {
     return Object.keys(nextErrors).length === 0;
   }
 
+  function fail(message: string, kind?: AuthErrorKind) {
+    const resolved = kind ?? classifyAuthError(message);
+    setErrorKind(resolved);
+    setErrorDetail(message || null);
+    setFormError(t(AUTH_ERROR_KEYS[resolved]));
+    setResendNote(null);
+  }
+
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     setFormError(null);
+    setErrorKind(null);
+    setErrorDetail(null);
+    setResendNote(null);
     if (!validate()) return;
 
     const supabase = getSupabaseBrowserClient();
@@ -90,17 +161,14 @@ export function AuthForm({ next }: { next: string }) {
           password,
         });
         if (error) {
-          setFormError(
-            error.message.toLowerCase().includes("invalid")
-              ? t("auth.invalidCredentials")
-              : t("auth.genericError"),
-          );
+          fail(error.message || t("auth.genericError"));
           return;
         }
         router.push(next);
         router.refresh();
       } else {
         const normalizedPhone = phone.replace(/\D/g, "").slice(-10);
+        setPendingEmail(email.trim());
         const { data, error } = await supabase.auth.signUp({
           email: email.trim(),
           password,
@@ -113,7 +181,7 @@ export function AuthForm({ next }: { next: string }) {
           },
         });
         if (error) {
-          setFormError(error.message || t("auth.genericError"));
+          fail(error.message || t("auth.genericError"));
           return;
         }
         if (data.session) {
@@ -124,9 +192,36 @@ export function AuthForm({ next }: { next: string }) {
         }
       }
     } catch {
+      setErrorKind("generic");
+      setErrorDetail(null);
       setFormError(t("auth.genericError"));
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function resendConfirmation(target: string) {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    const address = (target || pendingEmail || email).trim();
+    if (!address) return;
+
+    setResendBusy(true);
+    setResendNote(null);
+    try {
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email: address,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+        },
+      });
+      setResendNote(error ? "error" : "sent");
+      if (error) setErrorDetail(error.message);
+    } catch {
+      setResendNote("error");
+    } finally {
+      setResendBusy(false);
     }
   }
 
@@ -134,7 +229,10 @@ export function AuthForm({ next }: { next: string }) {
     setMode((current) => (current === "signIn" ? "signUp" : "signIn"));
     setErrors({});
     setFormError(null);
+    setErrorKind(null);
+    setErrorDetail(null);
     setCheckEmail(false);
+    setResendNote(null);
   }
 
   const isSignUp = mode === "signUp";
@@ -229,6 +327,37 @@ export function AuthForm({ next }: { next: string }) {
               <p className="mt-3 text-sm leading-relaxed text-white/50">
                 {t("auth.checkEmailBody")}
               </p>
+              {pendingEmail && (
+                <p className="mt-1.5 text-xs font-semibold text-white/60">
+                  {pendingEmail}
+                </p>
+              )}
+              <p className="mx-auto mt-4 max-w-xs text-[11px] leading-relaxed text-white/40">
+                {t("auth.checkEmailSpam")}
+              </p>
+              <button
+                type="button"
+                onClick={() => void resendConfirmation(pendingEmail)}
+                disabled={resendBusy || !pendingEmail}
+                className="btn-secondary mt-5"
+              >
+                {resendBusy ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Mail className="h-4 w-4" />
+                )}
+                {resendBusy ? t("auth.resending") : t("auth.resend")}
+              </button>
+              {resendNote === "sent" && (
+                <p className="mt-2 text-[11px] font-semibold text-emerald-400">
+                  {t("auth.resent")}
+                </p>
+              )}
+              {resendNote === "error" && (
+                <p className="mt-2 text-[11px] font-semibold text-rose-300">
+                  {t("auth.resendFailed")}
+                </p>
+              )}
               <button
                 type="button"
                 onClick={() => {
@@ -360,9 +489,41 @@ export function AuthForm({ next }: { next: string }) {
                 )}
 
                 {formError && (
-                  <p className="rounded-xl border border-rose-400/25 bg-rose-500/10 p-3 text-xs leading-relaxed text-rose-200">
-                    {formError}
-                  </p>
+                  <div className="rounded-xl border border-rose-400/25 bg-rose-500/10 p-3 text-xs leading-relaxed text-rose-200">
+                    <p>{formError}</p>
+                    {errorKind === "unconfirmed" && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          void resendConfirmation(pendingEmail || email)
+                        }
+                        disabled={resendBusy}
+                        className="mt-2.5 inline-flex items-center gap-1.5 rounded-full border border-rose-300/40 bg-rose-500/10 px-3 py-1.5 text-[11px] font-bold text-rose-100 transition hover:bg-rose-500/20 disabled:opacity-60"
+                      >
+                        {resendBusy ? (
+                          <Loader2 className="h-3 w-3 animate-spin" />
+                        ) : (
+                          <Mail className="h-3 w-3" />
+                        )}
+                        {resendBusy ? t("auth.resending") : t("auth.resend")}
+                      </button>
+                    )}
+                    {resendNote === "sent" && (
+                      <p className="mt-2 text-[11px] font-semibold text-emerald-300">
+                        {t("auth.resent")}
+                      </p>
+                    )}
+                    {resendNote === "error" && (
+                      <p className="mt-2 text-[11px] font-semibold text-rose-300">
+                        {t("auth.resendFailed")}
+                      </p>
+                    )}
+                    {errorDetail && errorDetail !== formError && (
+                      <p className="mt-2 font-mono text-[10px] leading-relaxed text-rose-200/70">
+                        {errorDetail}
+                      </p>
+                    )}
+                  </div>
                 )}
 
                 <button type="submit" disabled={busy} className="btn-primary w-full">

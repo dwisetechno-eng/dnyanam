@@ -164,7 +164,7 @@ export function RadioBar() {
             </button>
           </div>
 
-          <div className="hidden shrink-0 items-center gap-1.5 lg:flex">
+          <div className="flex shrink-0 items-center gap-1.5">
             <button
               type="button"
               onClick={toggleMute}
@@ -181,7 +181,7 @@ export function RadioBar() {
               value={muted ? 0 : volume}
               onChange={(event) => setVolume(Number(event.target.value))}
               aria-label={t("radio.barVolume")}
-              className="h-1 w-20 cursor-pointer appearance-none rounded-full bg-white/15 accent-saffron-400"
+              className="hidden h-1 w-20 cursor-pointer appearance-none rounded-full bg-white/15 accent-saffron-400 lg:block"
             />
           </div>
 
